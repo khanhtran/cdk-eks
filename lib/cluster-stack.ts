@@ -1,4 +1,4 @@
-import { CfnOutput, CfnResource, Arn, ArnFormat } from 'aws-cdk-lib'
+import { CfnOutput, CfnResource, Arn, ArnFormat, Stack, StackProps, Fn } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { Cluster, KubernetesVersion, Nodegroup } from 'aws-cdk-lib/aws-eks'
 import { InstanceType, IVpc } from 'aws-cdk-lib/aws-ec2';
@@ -8,6 +8,7 @@ import {
     ServicePrincipal,
     ManagedPolicy
 } from 'aws-cdk-lib/aws-iam'
+import * as eks from 'aws-cdk-lib/aws-eks'
 
 export class ClusterStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -37,20 +38,20 @@ export class ClusterStack extends Stack {
     })
     
     const clusterName = Arn.split(resource.getAtt('Arn').toString(), ArnFormat.SLASH_RESOURCE_NAME).resourceName
-    const cluster = Cluster.fromClusterAttributes(scope, 'imported-eks-cluster', {
-            clusterName: clusterName!,
-            clusterSecurityGroupId: 'sg-05b9eb28277988c95'
-            vpc: props.vpc
-        })
+    // const cluster = Cluster.fromClusterAttributes(scope, 'imported-eks-cluster', {
+    //         clusterName: clusterName!,
+    //         clusterSecurityGroupId: 'sg-05b9eb28277988c95',
+    //         vpc: props.vpc
+    //     })
 
-        new Nodegroup(scope, 'medchem-eks-nodegroup', {
-            cluster: cluster,
-            nodeRole: this.nodeRole(scope),
-            minSize: 1,
-            desiredSize: 1,
-            maxSize: 1,
-            instanceTypes: [new InstanceType('t2.micro')]
-        })
+    //     new Nodegroup(scope, 'medchem-eks-nodegroup', {
+    //         cluster: cluster,
+    //         nodeRole: this.nodeRole(scope),
+    //         minSize: 1,
+    //         desiredSize: 1,
+    //         maxSize: 1,
+    //         instanceTypes: [new InstanceType('t2.micro')]
+    //     })
   }
   
   
