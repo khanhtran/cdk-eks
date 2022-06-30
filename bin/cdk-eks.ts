@@ -7,7 +7,7 @@ import { ClusterStack } from '../lib/cluster-stack';
 
 const app = new cdk.App()
 const env = {
-  account: '657641750194',
+  account: '',
   region: 'us-east-2'
 }
 new RoleStack(app, 'eks-role-stack', {
